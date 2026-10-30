@@ -1,0 +1,4 @@
+username,password,shouldSucceed,testName
+admin,admin,true,Успешный вход администратора
+admin,wrongPassword,false,Вход с неверным паролем
+fakeUser,fakePass,false,Вход с несуществующим пользователем

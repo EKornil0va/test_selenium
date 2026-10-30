@@ -1,20 +1,19 @@
 package tests;
 
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pages.LoginPage;
+import utils.CsvReader;
 
 public class LoginFeatureTests extends BaseTest {
+    private static final String BASE_URL = "http://localhost:8080";
 
     @DataProvider(name = "loginData")
     public Object[][] getLoginData() {
-        return new Object[][]{
-                {LOGIN, PASSWORD, true, "Успешный вход администратора"},
-                {LOGIN, WRONG_PASSWORD, false, "Вход с неверным паролем"},
-                {FAKE_LOGIN, FAKE_PASSWORD, false, "Вход с несуществующим пользователем"}
+        return CsvReader.getData("login_data.csv");
         };
-    }
 
     @Test(dataProvider = "loginData", description = "Проверка сценариев авторизации")
     public void testLoginScenarios(String username, String password, boolean shouldSucceed, String testName) {
@@ -23,11 +22,8 @@ public class LoginFeatureTests extends BaseTest {
         loginPage.login(username, password);
 
         if (shouldSucceed) {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
+            wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("login")));
+            wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("oauth")));
 
             String currentUrl = getDriver().getCurrentUrl();
             String pageTitle = getDriver().getTitle();
@@ -35,14 +31,11 @@ public class LoginFeatureTests extends BaseTest {
             System.out.println("Title страницы: " + pageTitle);
 
             boolean isNotLoginPage = !currentUrl.contains("login") && !currentUrl.contains("oauth");
-
             Assert.assertTrue(isNotLoginPage, "Успешный вход не произошел. URL: " + currentUrl);
-
-            System.out.println("" + testName);
+            System.out.println(testName + " - пройден");
         } else {
-            Assert.assertTrue(loginPage.isErrorMessageDisplayed(), "Неверные данные не вызвали ошибку. Тест: " + testName);
-            System.out.println("" + testName);
+            Assert.assertTrue(loginPage.isErrorMessageDisplayed(), "Неверные данные не вызвали ошибку. " + testName);
+            System.out.println(testName + " - пройден");
         }
     }
-
 }

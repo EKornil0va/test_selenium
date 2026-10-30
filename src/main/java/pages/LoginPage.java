@@ -6,11 +6,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class LoginPage extends BasePage {
-
-    private By usernameInput = By.cssSelector("input[data-test='username-field']");
-    private By passwordInput = By.cssSelector("input[data-test='password-field']");
-    private By loginButton = By.cssSelector("button[data-test='login-button']");
-    private By errorMessage = By.cssSelector("[data-test='error-message']");
+    private By usernameInput = By.xpath("//input[@data-test='username-field']");
+    private By passwordInput = By.xpath("//input[@data-test='password-field']");
+    private By loginButton = By.xpath("//button[@data-test='login-button']");
+    private By errorMessage = By.xpath("//*[@data-test='error-message']");
 
     public LoginPage(WebDriver driver) {
         super(driver);

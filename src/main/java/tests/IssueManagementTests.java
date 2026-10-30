@@ -1,10 +1,16 @@
 package tests;
 
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.IssueManagementPage;
 import pages.LoginPage;
 
 public class IssueManagementTests extends BaseTest {
+    private static final String BASE_URL = "http://localhost:8080";
+    private static final String TASK_BOARD = "http://localhost:8080/issues";
+    private static final String LOGIN = "admin";
+    private static final String PASSWORD = "admin";
 
     @Test(description = "Проверка доступности страницы задач")
     public void testNavigateToIssues() {
@@ -12,11 +18,12 @@ public class IssueManagementTests extends BaseTest {
         LoginPage loginPage = new LoginPage(getDriver());
         loginPage.login(LOGIN, PASSWORD);
 
-        getDriver().get(TASK_BOARD);
+        obtainingRedirectAfterSuccessfulLogin();
 
-        String currentUrl = getDriver().getCurrentUrl();
-        Assert.assertTrue(currentUrl != null && currentUrl.contains("issues"),
-                "Переход на страницу задач не удался. URL: " + currentUrl);
+        IssueManagementPage issuePage = new IssueManagementPage(getDriver());
+        issuePage.navigateTo(TASK_BOARD);
+
+        Assert.assertTrue(issuePage.isPageLoaded("issues"), "Переход на страницу задач не удался.");
         System.out.println("Страница задач успешно открыта");
     }
 
@@ -26,33 +33,12 @@ public class IssueManagementTests extends BaseTest {
         LoginPage loginPage = new LoginPage(getDriver());
         loginPage.login(LOGIN, PASSWORD);
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        obtainingRedirectAfterSuccessfulLogin();
 
-        getDriver().get(TASK_BOARD);
+        IssueManagementPage issuePage = new IssueManagementPage(getDriver());
+        issuePage.navigateTo(TASK_BOARD);
 
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-
-        String currentUrl = getDriver().getCurrentUrl();
-        Assert.assertTrue(currentUrl != null && currentUrl.contains("issues"),
-                "URL не содержит 'issues'. Текущий URL: " + currentUrl);
-
-        String pageTitle = getDriver().getTitle();
-        System.out.println("Заголовок страницы задач: '" + pageTitle + "'");
-
-        String lowerTitle = pageTitle != null ? pageTitle.toLowerCase() : "";
-        boolean isTitleValid = lowerTitle.contains("issue") ||
-                lowerTitle.contains("задач") ||
-                lowerTitle.contains("youtrack");
-
-        Assert.assertTrue(isTitleValid, "Заголовок страницы не соответствует ожиданиям. Title: " + pageTitle);
+        Assert.assertTrue(issuePage.isPageLoaded("issues"), "URL не содержит 'issues' или страница не загрузилась.");
         System.out.println("Страница задач загрузилась корректно");
     }
 
@@ -62,24 +48,19 @@ public class IssueManagementTests extends BaseTest {
         LoginPage loginPage = new LoginPage(getDriver());
         loginPage.login(LOGIN, PASSWORD);
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        obtainingRedirectAfterSuccessfulLogin();
 
-        getDriver().get(TASK_BOARD);
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        IssueManagementPage issuePage = new IssueManagementPage(getDriver());
+        issuePage.navigateTo(TASK_BOARD);
+        issuePage.isPageLoaded("issues");
 
-        String pageSource = getDriver().getPageSource();
-        boolean hasSearch = pageSource != null && (pageSource.contains("Поиск") || pageSource.contains("Search") ||
-                pageSource.contains("filter") || pageSource.contains("Фильтр"));
-
-        Assert.assertTrue(hasSearch, "На странице задач не найдено поле поиска или фильтрации.");
-        System.out.println("Элементы поиска/фильтрации присутствуют на странице");
+        Assert.assertTrue(issuePage.isSearchFieldPresent(), "На странице задач не найдено поле поиска или фильтрации.");
+        System.out.println("Элементы фильтрации присутствуют на странице");
     }
+
+    void obtainingRedirectAfterSuccessfulLogin(){
+        wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("login")));
+        wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("oauth")));
+    }
+
 }

@@ -4,6 +4,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
@@ -11,13 +12,7 @@ import java.time.Duration;
 
 public class BaseTest {
     protected ThreadLocal<WebDriver> driver = new ThreadLocal<>();
-    static String BASE_URL = "http://localhost:8080";
-    static String TASK_BOARD = "http://localhost:8080/issues";
-    static String PASSWORD = "admin";
-    static String LOGIN = "admin";
-    static String WRONG_PASSWORD = "wrongPassword";
-    static String FAKE_PASSWORD = "fakeUser";
-    static String FAKE_LOGIN = "fakePass";
+    protected WebDriverWait wait;
 
 
     @BeforeMethod
@@ -34,6 +29,7 @@ public class BaseTest {
             webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
             driver.set(webDriver);
+            wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
             System.out.println("Драйвер успешно инициализирован.");
 
         } catch (Exception e) {
@@ -56,7 +52,7 @@ public class BaseTest {
     public WebDriver getDriver() {
         WebDriver wd = driver.get();
         if (wd == null) {
-            System.err.println("getDriver() вернул null! Проверьте логи выше, @BeforeMethod явно упал.");
+            System.err.println("getDriver() вернул null.");
         }
         return wd;
     }
