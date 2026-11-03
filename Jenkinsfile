@@ -10,7 +10,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Клонирование репозитория'
-                git branch: 'main', url: 'https://github.com/EKornil0va/test_selenium.git'
+                git branch: 'master', url: 'https://github.com/EKornil0va/test_selenium.git'
             }
         }
 
