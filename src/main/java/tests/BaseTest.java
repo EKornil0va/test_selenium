@@ -7,10 +7,19 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import utils.ConfigReader;
 
 import java.time.Duration;
 
 public class BaseTest {
+    public static final String BASE_URL = ConfigReader.getProperty("base.url");
+    public static final String TASK_BOARD = ConfigReader.getProperty("task.board.url");
+    public static final String LOGIN = ConfigReader.getProperty("login");
+    public static final String PASSWORD = ConfigReader.getProperty("password");
+    public static final String AGILE_URL = ConfigReader.getProperty("agile.url");
+    public static final String DASHBOARD_URL = ConfigReader.getProperty("dashboard.url");
+
+
     protected ThreadLocal<WebDriver> driver = new ThreadLocal<>();
     protected WebDriverWait wait;
 
@@ -22,8 +31,11 @@ public class BaseTest {
             WebDriverManager.chromedriver().setup();
 
             ChromeOptions options = new ChromeOptions();
-            options.addArguments("--window-size=1920,1080");
+            options.addArguments("--start-maximized");
             options.addArguments("--remote-allow-origins=*");
+
+            options.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
+            options.setExperimentalOption("useAutomationExtension", false);
 
             WebDriver webDriver = new ChromeDriver(options);
             webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));

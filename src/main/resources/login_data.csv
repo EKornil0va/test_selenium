@@ -1,4 +1,5 @@
 username,password,shouldSucceed,testName
-admin,admin,true,Успешный вход администратора
-admin,wrongPassword,false,Вход с неверным паролем
-fakeUser,fakePass,false,Вход с несуществующим пользователем
+admin,admin,true,Успешный вход с валидными данными
+admin,wrongpassword,false,Ошибка входа с неверным паролем
+wronguser,admin,false,Ошибка входа с неверным логином
+,,false,Ошибка входа с пустыми полями

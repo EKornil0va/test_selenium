@@ -8,7 +8,6 @@ import pages.LoginPage;
 import utils.CsvReader;
 
 public class LoginFeatureTests extends BaseTest {
-    private static final String BASE_URL = "http://localhost:8080";
 
     @DataProvider(name = "loginData")
     public Object[][] getLoginData() {
@@ -26,9 +25,6 @@ public class LoginFeatureTests extends BaseTest {
             wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("oauth")));
 
             String currentUrl = getDriver().getCurrentUrl();
-            String pageTitle = getDriver().getTitle();
-            System.out.println("URL после попытки входа: " + currentUrl);
-            System.out.println("Title страницы: " + pageTitle);
 
             boolean isNotLoginPage = !currentUrl.contains("login") && !currentUrl.contains("oauth");
             Assert.assertTrue(isNotLoginPage, "Успешный вход не произошел. URL: " + currentUrl);

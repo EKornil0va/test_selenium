@@ -32,7 +32,6 @@ public class ScreenshotListener extends TestListenerAdapter {
                     System.err.println("Скриншот сохранен: " + destFile.toAbsolutePath());
                 } catch (Exception e) {
                     System.err.println("Не удалось сделать скриншот: " + e.getMessage());
-                    e.printStackTrace();
                 }
             }
         }

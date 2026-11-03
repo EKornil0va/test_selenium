@@ -7,10 +7,6 @@ import pages.IssueManagementPage;
 import pages.LoginPage;
 
 public class IssueManagementTests extends BaseTest {
-    private static final String BASE_URL = "http://localhost:8080";
-    private static final String TASK_BOARD = "http://localhost:8080/issues";
-    private static final String LOGIN = "admin";
-    private static final String PASSWORD = "admin";
 
     @Test(description = "Проверка доступности страницы задач")
     public void testNavigateToIssues() {
