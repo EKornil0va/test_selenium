@@ -5,11 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class AgileBoardPage extends BasePage {
-    private By boardToolbar = By.cssSelector("[data-test='yt-agile-board-toolbar']");
-    private By boardTable = By.cssSelector(".yt-agile-table");
-    private By searchField = By.cssSelector("[data-test='ring-query-assist-input']");
-    private By backlogButton = By.cssSelector("[data-test='backlogToggler']");
-
     public AgileBoardPage(WebDriver driver) {
         super(driver);
     }
@@ -20,22 +15,22 @@ public class AgileBoardPage extends BasePage {
 
     public boolean isPageLoaded(String expectedUrlPart) {
         wait.until(ExpectedConditions.urlContains(expectedUrlPart));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(boardToolbar));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-test='yt-agile-board-toolbar']")));
         return true;
     }
 
     public boolean isBoardTableDisplayed() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(boardTable));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".yt-agile-table")));
         return true;
     }
 
     public boolean isSearchFieldPresent() {
-        wait.until(ExpectedConditions.presenceOfElementLocated(searchField));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-test='ring-query-assist-input']")));
         return true;
     }
 
     public boolean isBacklogButtonPresent() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(backlogButton));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-test='backlogToggler']")));
         return true;
     }
 }

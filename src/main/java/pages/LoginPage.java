@@ -6,31 +6,26 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class LoginPage extends BasePage {
-    private By usernameInput = By.xpath("//input[@data-test='username-field']");
-    private By passwordInput = By.xpath("//input[@data-test='password-field']");
-    private By loginButton = By.xpath("//button[@data-test='login-button']");
-    private By errorMessage = By.xpath("//*[@data-test='error-message']");
-
     public LoginPage(WebDriver driver) {
         super(driver);
     }
 
     public void login(String username, String password) {
-        WebElement userField = wait.until(ExpectedConditions.visibilityOfElementLocated(usernameInput));
+        WebElement userField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@data-test='username-field']")));
         userField.clear();
         userField.sendKeys(username);
 
-        WebElement passField = wait.until(ExpectedConditions.visibilityOfElementLocated(passwordInput));
+        WebElement passField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@data-test='password-field']")));
         passField.clear();
         passField.sendKeys(password);
 
-        WebElement btn = wait.until(ExpectedConditions.elementToBeClickable(loginButton));
+        WebElement btn = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@data-test='login-button']")));
         btn.click();
     }
 
     public boolean isErrorMessageDisplayed() {
         try {
-            WebElement errorElement = wait.until(ExpectedConditions.visibilityOfElementLocated(errorMessage));
+            WebElement errorElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@data-test='error-message']")));
             return errorElement.isDisplayed();
         } catch (Exception e) {
             return false;

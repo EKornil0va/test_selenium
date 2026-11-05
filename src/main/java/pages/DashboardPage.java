@@ -5,11 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class DashboardPage extends BasePage {
-    private By dashboardNameLocator = By.cssSelector("[data-test='breadcrumbs-container'] [data-test='dashboard-name']");
-    private By addWidgetButtonLocator = By.cssSelector("[data-test='add-widget-button']");
-    private By newDashboardButtonLocator = By.cssSelector("[data-test='new-dashboard-button']");
-    private By widgetContainerLocator = By.cssSelector("[data-test='grid-item']");
-
     public DashboardPage(WebDriver driver) {
         super(driver);
     }
@@ -20,26 +15,21 @@ public class DashboardPage extends BasePage {
 
     public boolean isPageLoaded(String expectedUrlPart) {
         wait.until(ExpectedConditions.urlContains(expectedUrlPart));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(dashboardNameLocator));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-test='breadcrumbs-container'] [data-test='dashboard-name']")));
         return true;
     }
 
     public String getDashboardName() {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(dashboardNameLocator)).getText();
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-test='breadcrumbs-container'] [data-test='dashboard-name']"))).getText();
     }
 
     public boolean isAddWidgetButtonDisplayed() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(addWidgetButtonLocator));
-        return true;
-    }
-
-    public boolean isNewDashboardButtonDisplayed() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(newDashboardButtonLocator));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-test='add-widget-button']")));
         return true;
     }
 
     public boolean isWidgetPresent() {
-        wait.until(ExpectedConditions.presenceOfElementLocated(widgetContainerLocator));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-test='grid-item']")));
         return true;
     }
 }
