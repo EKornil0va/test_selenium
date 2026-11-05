@@ -1,6 +1,5 @@
 package tests;
 
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -21,17 +20,12 @@ public class LoginFeatureTests extends BaseTest {
         loginPage.login(username, password);
 
         if (shouldSucceed) {
-            wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("login")));
-            wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("oauth")));
-
             String currentUrl = getDriver().getCurrentUrl();
 
             boolean isNotLoginPage = !currentUrl.contains("login") && !currentUrl.contains("oauth");
             Assert.assertTrue(isNotLoginPage, "Успешный вход не произошел. URL: " + currentUrl);
-            System.out.println(testName + " - пройден");
         } else {
             Assert.assertTrue(loginPage.isErrorMessageDisplayed(), "Неверные данные не вызвали ошибку. " + testName);
-            System.out.println(testName + " - пройден");
         }
     }
 }

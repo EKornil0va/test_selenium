@@ -1,10 +1,24 @@
 package pages;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class DashboardPage extends BasePage {
+
+    @FindBy(xpath = "//div[@data-test='breadcrumbs-container']//span[@data-test='dashboard-name']")
+    private WebElement dashboardName;
+
+    @FindBy(xpath = "//button[@data-test='new-dashboard-button']")
+    private WebElement newDashboardButton;
+
+    @FindBy(xpath = "//button[@data-test='add-widget-button']")
+    private WebElement addWidgetButton;
+
+    @FindBy(xpath = "//div[@data-test='grid-item']")
+    private WebElement gridItem;
+
     public DashboardPage(WebDriver driver) {
         super(driver);
     }
@@ -13,23 +27,28 @@ public class DashboardPage extends BasePage {
         driver.get(url);
     }
 
-    public boolean isPageLoaded(String expectedUrlPart) {
-        wait.until(ExpectedConditions.urlContains(expectedUrlPart));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-test='breadcrumbs-container'] [data-test='dashboard-name']")));
-        return true;
+    public String getDashboardName() {
+        return wait.until(ExpectedConditions.visibilityOf(dashboardName)).getText();
     }
 
-    public String getDashboardName() {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-test='breadcrumbs-container'] [data-test='dashboard-name']"))).getText();
+    public WebElement getAddWidgetButton() {
+        return wait.until(ExpectedConditions.visibilityOf(addWidgetButton));
+    }
+
+    public WebElement getGridItem() {
+        return wait.until(ExpectedConditions.visibilityOf(gridItem));
+    }
+
+    public boolean isPageLoaded(String expectedUrlPart) {
+        wait.until(ExpectedConditions.urlContains(expectedUrlPart));
+        return getDashboardName() != null;
     }
 
     public boolean isAddWidgetButtonDisplayed() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-test='add-widget-button']")));
-        return true;
+        return getAddWidgetButton().isDisplayed();
     }
 
     public boolean isWidgetPresent() {
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-test='grid-item']")));
-        return true;
+        return getGridItem().isDisplayed();
     }
 }
